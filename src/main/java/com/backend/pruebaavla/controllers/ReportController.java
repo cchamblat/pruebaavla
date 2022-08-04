@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 
@@ -19,7 +20,7 @@ public class ReportController {
     private ReportServiceImpl reportService;
 
     @PostMapping(value = "/updateReport")
-    public List<List<Deal>> createReport(@RequestParam("file") MultipartFile file) throws IOException {
+    public List<List<Deal>> createReport(@RequestParam("file") MultipartFile file) throws IOException, ParseException {
         return reportService.readFile(file);
     }
 

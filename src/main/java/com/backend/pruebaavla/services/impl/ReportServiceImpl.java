@@ -11,8 +11,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import static org.apache.poi.ss.usermodel.Row.CREATE_NULL_AS_BLANK;
@@ -24,7 +28,9 @@ public class ReportServiceImpl implements ReportService {
     private Utils utils;
 
     @Override
-    public List<List<Deal>> readFile(MultipartFile file) throws IOException {
+    public List<List<Deal>> readFile(MultipartFile file) throws IOException, ParseException {
+        DateFormat dateFormatLogDate = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat dateFormatLogTime = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         List<Deal> deals = new ArrayList<>();
         XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
         //En el caso que una celda nula, dejar en blanco
@@ -41,12 +47,14 @@ public class ReportServiceImpl implements ReportService {
             deal.setFieldKey(row.getCell(3).getStringCellValue());
             deal.setOldValue(row.getCell(4).getStringCellValue());
             deal.setNewValue(row.getCell(5).getStringCellValue());
-            deal.setLogDate(String.valueOf(row.getCell(7).getDateCellValue()));
-            deal.setLogTime(row.getCell(8).getDateCellValue());
+            deal.setLogDate(dateFormatLogDate.format(row.getCell(7).getDateCellValue()));
+            deal.setLogTime(dateFormatLogTime.format(row.getCell(8).getDateCellValue()));
             deal.setChangeSource(row.getCell(9).getStringCellValue());
             deals.add(deal);
         }
         deals.sort(Comparator.comparing(Deal::getDealId));
+        List<?> times = utils.getTimes(utils.orderDeals(deals));
+        System.out.println(times.toString());
         return utils.orderDeals(deals);
     }
 

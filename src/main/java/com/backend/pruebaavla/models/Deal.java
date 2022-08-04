@@ -17,7 +17,7 @@ public class Deal {
     private String oldValue;
     private String newValue;
     private String logDate;
-    private Date logTime;
+    private String logTime;
     private String changeSource;
 
 }
