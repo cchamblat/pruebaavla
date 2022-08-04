@@ -2,6 +2,8 @@ package com.backend.pruebaavla.models;
 
 import lombok.*;
 
+import java.util.Date;
+
 @Data
 @Setter
 @Getter
@@ -15,7 +17,7 @@ public class Deal {
     private String oldValue;
     private String newValue;
     private String logDate;
-    private String logTime;
+    private Date logTime;
     private String changeSource;
 
 }

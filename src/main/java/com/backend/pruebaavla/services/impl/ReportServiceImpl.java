@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.apache.poi.ss.usermodel.Row.CREATE_NULL_AS_BLANK;
@@ -23,7 +24,7 @@ public class ReportServiceImpl implements ReportService {
     private Utils utils;
 
     @Override
-    public List<Deal> readFile(MultipartFile file) throws IOException {
+    public List<List<Deal>> readFile(MultipartFile file) throws IOException {
         List<Deal> deals = new ArrayList<>();
         XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
         //En el caso que una celda nula, dejar en blanco
@@ -41,13 +42,24 @@ public class ReportServiceImpl implements ReportService {
             deal.setOldValue(row.getCell(4).getStringCellValue());
             deal.setNewValue(row.getCell(5).getStringCellValue());
             deal.setLogDate(String.valueOf(row.getCell(7).getDateCellValue()));
-            deal.setLogTime(String.valueOf(row.getCell(8).getDateCellValue()));
+            deal.setLogTime(row.getCell(8).getDateCellValue());
             deal.setChangeSource(row.getCell(9).getStringCellValue());
             deals.add(deal);
         }
-        //Dado que el archivo viene desde lo más nuevo a lo más viejo, en necesario hacer reversa a la lista
-        return utils.reverseList(deals);
+        deals.sort(Comparator.comparing(Deal::getDealId));
+        return utils.orderDeals(deals);
     }
+
+
+
+
+
+
+
+
+
+
+
 
 }
 

@@ -7,5 +7,5 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ReportService {
-    List<Deal> readFile(MultipartFile file) throws IOException;
+    List<List<Deal>> readFile(MultipartFile file) throws IOException;
 }

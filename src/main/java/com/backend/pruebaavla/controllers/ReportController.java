@@ -19,10 +19,8 @@ public class ReportController {
     private ReportServiceImpl reportService;
 
     @PostMapping(value = "/updateReport")
-    public List<Deal> createReport(@RequestParam("file") MultipartFile file) throws IOException {
+    public List<List<Deal>> createReport(@RequestParam("file") MultipartFile file) throws IOException {
         return reportService.readFile(file);
-
-
     }
 
 
